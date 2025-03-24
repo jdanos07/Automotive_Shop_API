@@ -13,7 +13,7 @@ class Vehicles(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     vin: Mapped[str] = mapped_column(db.String(17))
-    customer_phone: Mapped[int] = mapped_column(db.ForeignKey("customer.phone_number"))
+    customer_phone: Mapped[int] = mapped_column(db.ForeignKey("customer.phone_number"), nullable=True)
 
     customer: Mapped["Customers"] = relationship("Customers", back_populates="vehicles",foreign_keys=[customer_phone])
     service_tickets: Mapped[List["Service_Tickets"]] = relationship("Service_Tickets", back_populates="vehicle")
@@ -23,7 +23,7 @@ class Customers(Base):
 
     phone_number: Mapped[int] = mapped_column(primary_key=True, autoincrement=False)
     name: Mapped[str] = mapped_column(db.String(100))
-    vin: Mapped[str] = mapped_column(db.ForeignKey("vehicle.vin"))
+    vin: Mapped[str] = mapped_column(db.ForeignKey("vehicle.vin"), nullable=True)
 
     service_tickets: Mapped[List["Service_Tickets"]] = relationship(back_populates = "customer")
     vehicles: Mapped[List["Vehicles"]] = relationship("Vehicles", back_populates = "customer", foreign_keys = [Vehicles.customer_phone])

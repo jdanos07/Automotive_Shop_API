@@ -12,7 +12,12 @@ def create_mechanic():
     except ValidationError as e:
         return jsonify(e.messages), 400
     
-    new_mechanic = Mechanics(name=mechanic_data['name'], email=mechanic_data['email'], password=mechanic_data['password'])
+    new_mechanic = Mechanics(
+        name=mechanic_data['name'],
+        phone_number=mechanic_data.get('phone_number'),
+        skill_level=mechanic_data['skill_level'],
+        hourly_rate=mechanic_data['hourly_rate']
+    )
     
     db.session.add(new_mechanic)
     db.session.commit()
@@ -50,10 +55,12 @@ def update_mechanic(mechanic_id):
 
     if 'name' in mechanic_data:
         mechanic.name = mechanic_data['name']
-    if 'email' in mechanic_data:
-        mechanic.email = mechanic_data['email']
-    if 'password' in mechanic_data:
-        mechanic.password = mechanic_data['password']
+    if 'phone_number' in mechanic_data:
+        mechanic.phone_number = mechanic_data['phone_number']
+    if 'skill_level' in mechanic_data:
+        mechanic.skill_level = mechanic_data['skill_level']
+    if 'hourly_rate' in mechanic_data:
+        mechanic.hourly_rate = mechanic_data['hourly_rate']
 
     db.session.commit()
     return mechanic_schema.jsonify(mechanic), 200

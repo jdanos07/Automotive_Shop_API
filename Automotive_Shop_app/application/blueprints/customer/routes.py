@@ -12,7 +12,11 @@ def create_customer():
     except ValidationError as e:
         return jsonify(e.messages), 400
     
-    new_customer = Customers(name = customer_data['name'], phone_number = customer_data['phone_number'])
+    new_customer = Customers(
+        name = customer_data['name'], 
+        phone_number = customer_data['phone_number'], 
+        vin = customer_data.get('vin')
+        )
     
     db.session.add(new_customer)
     db.session.commit()
@@ -50,10 +54,9 @@ def update_customer(customer_id):
 
     if 'name' in customer_data:
         customer.name = customer_data['name']
-    if 'email' in customer_data:
-        customer.email = customer_data['email']
-    if 'password' in customer_data:
-        customer.password = customer_data['password']
+    if 'vin' in customer_data:
+        customer.vin = customer_data['vin']
+   
 
     db.session.commit()
     return customer_schema.jsonify(customer), 200

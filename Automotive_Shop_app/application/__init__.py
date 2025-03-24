@@ -4,6 +4,7 @@ from application.extensions import ma
 from application.blueprints.customer import customers_bp
 from application.blueprints.mechanic import mechanics_bp
 from application.blueprints.service_ticket import service_tickets_bp
+from application.blueprints.vehicle import vehicles_bp
 
 def create_app(config_name = 'DevelopmentConfig'):
 
@@ -16,5 +17,6 @@ def create_app(config_name = 'DevelopmentConfig'):
     app.register_blueprint(customers_bp, url_prefix = '/customers')
     app.register_blueprint(mechanics_bp, url_prefix = '/mechanics')
     app.register_blueprint(service_tickets_bp, url_prefix = '/service_tickets')
+    app.register_blueprint(vehicles_bp, url_prefix = '/vehicles')
 
     return app

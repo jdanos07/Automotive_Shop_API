@@ -13,10 +13,8 @@ def create_vehicle():
         return jsonify(e.messages), 400
     
     new_vehicle = Vehicles(
-        make=vehicle_data['make'], 
-        model=vehicle_data['model'], 
-        year=vehicle_data['year'],
         vin=vehicle_data['vin']
+        customer_phone=vehicle_data.get('customer_phone')
     )
     
     db.session.add(new_vehicle)
@@ -55,14 +53,10 @@ def update_vehicle(vehicle_id):
     except ValidationError as e:
         return jsonify(e.messages), 400
 
-    if 'make' in vehicle_data:
-        vehicle.make = vehicle_data['make']
-    if 'model' in vehicle_data:
-        vehicle.model = vehicle_data['model']
-    if 'year' in vehicle_data:
-        vehicle.year = vehicle_data['year']
     if 'vin' in vehicle_data:
         vehicle.vin = vehicle_data['vin']
+    if 'customer_phone' in vehicle_data:
+        vehicle.customer_phone = vehicle_data['customer_phone']
 
     db.session.commit()
     return vehicle_schema.jsonify(vehicle), 200
