@@ -1,9 +1,9 @@
 from flask import Flask
-from models import db
-from extensions import ma
-from blueprints.customer import customers_bp
-from blueprints.mechanic import mechanics_bp
-from blueprints.service_ticket import service_tickets_bp
+from application.models import db
+from application.extensions import ma
+from application.blueprints.customer import customers_bp
+from application.blueprints.mechanic import mechanics_bp
+from application.blueprints.service_ticket import service_tickets_bp
 
 def create_app(config_name = 'DevelopmentConfig'):
 

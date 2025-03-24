@@ -2,4 +2,4 @@ from flask import Blueprint
 
 customers_bp = Blueprint('customers_bp', __name__)
 
-from . import routes
+from application.blueprints.customer import routes

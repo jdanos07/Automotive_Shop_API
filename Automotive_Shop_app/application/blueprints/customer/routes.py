@@ -12,7 +12,7 @@ def create_customer():
     except ValidationError as e:
         return jsonify(e.messages), 400
     
-    new_customer = Customers(name = customer_data['name'], email =customer_data['email'], password = customer_data['password'])
+    new_customer = Customers(name = customer_data['name'], phone_number = customer_data['phone_number'])
     
     db.session.add(new_customer)
     db.session.commit()
