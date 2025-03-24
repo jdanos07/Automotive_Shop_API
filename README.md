@@ -50,6 +50,7 @@ Install Dependencies:
     
 
 4) API Endpoints
+   
   Customers
     GET /customers – List all customers.
     
