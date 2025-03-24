@@ -23,7 +23,8 @@ This is a Flask-based web application designed to streamline operations for an a
 
 2) Project Structure
 
-![image](https://github.com/user-attachments/assets/b0638ed9-6dc6-4a93-b147-892e484207e5)
+![image](https://github.com/user-attachments/assets/0ed00294-5852-4cc9-bde6-acb8c8cab713)
+
 
 3) Installation
 
