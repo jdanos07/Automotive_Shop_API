@@ -5,7 +5,7 @@ from marshmallow import ValidationError
 from application.models import Customers, db
 from sqlalchemy import select
 
-@customers_bp.route("/customers", methods=['POST'])
+@customers_bp.route('/', methods=['POST'])
 def create_customer():
     try: 
         customer_data = customer_schema.load(request.json)
@@ -19,13 +19,13 @@ def create_customer():
 
     return customer_schema.jsonify(new_customer), 201
 
-@customers_bp.route('/customers', methods=['GET'])
+@customers_bp.route('/', methods=['GET'])
 def get_customers():
     query = select(Customers)
     result = db.session.execute(query).scalars().all()
     return customers_schema.jsonify(result), 200 
 
-@customers_bp.route('/customers/<int:Customer_id>', methods=['GET'])
+@customers_bp.route('/<int:Customer_id>', methods=['GET'])
 def get_Customer(customer_id):
     query = select(Customers).where(Customers.id == customer_id)
     customer = db.session.execute(query).scalars().first()
@@ -35,7 +35,7 @@ def get_Customer(customer_id):
     else:
         return customers_schema.jsonify(customer), 200
     
-@customers_bp.route('/customers/<int:customer_id>', methods=['PUT'])
+@customers_bp.route('/<int:customer_id>', methods=['PUT'])
 def update_customer(customer_id):
     query = select(Customers).where(Customers.id == customer_id)
     customer = db.session.execute(query).scalars().first()
@@ -58,7 +58,7 @@ def update_customer(customer_id):
     db.session.commit()
     return customer_schema.jsonify(customer), 200
 
-@customers_bp.route('/customers/<int:customer_id>', methods=['DELETE'])
+@customers_bp.route('/<int:customer_id>', methods=['DELETE'])
 def delete_customer(customer_id):
     query = select(Customers).where(Customers.id == customer_id)
     customer = db.session.execute(query).scalars().first()

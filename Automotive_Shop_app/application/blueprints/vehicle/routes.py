@@ -5,7 +5,7 @@ from marshmallow import ValidationError
 from application.models import Vehicles, db
 from sqlalchemy import select
 
-@vehicles_bp.route("/vehicles", methods=['POST'])
+@vehicles_bp.route('/', methods=['POST'])
 def create_vehicle():
     try: 
         vehicle_data = vehicle_schema.load(request.json)
@@ -25,14 +25,14 @@ def create_vehicle():
     return vehicle_schema.jsonify(new_vehicle), 201
 
 
-@vehicles_bp.route('/vehicles', methods=['GET'])
+@vehicles_bp.route('/', methods=['GET'])
 def get_vehicles():
     query = select(Vehicles)
     result = db.session.execute(query).scalars().all()
     return vehicles_schema.jsonify(result), 200 
 
 
-@vehicles_bp.route('/vehicles/<int:Vehicle_id>', methods=['GET'])
+@vehicles_bp.route('/<int:Vehicle_id>', methods=['GET'])
 def get_vehicle(vehicle_id):
     query = select(Vehicles).where(Vehicles.id == vehicle_id)
     vehicle = db.session.execute(query).scalars().first()
@@ -42,7 +42,7 @@ def get_vehicle(vehicle_id):
     
     return vehicle_schema.jsonify(vehicle), 200
 
-@vehicles_bp.route('/vehicles/<int:vehicle_id>', methods=['PUT'])
+@vehicles_bp.route('/<int:vehicle_id>', methods=['PUT'])
 def update_vehicle(vehicle_id):
     query = select(Vehicles).where(Vehicles.id == vehicle_id)
     vehicle = db.session.execute(query).scalars().first()
@@ -67,7 +67,7 @@ def update_vehicle(vehicle_id):
     db.session.commit()
     return vehicle_schema.jsonify(vehicle), 200
 
-@vehicles_bp.route('/vehicles/<int:vehicle_id>', methods=['DELETE'])
+@vehicles_bp.route('/<int:vehicle_id>', methods=['DELETE'])
 def delete_vehicle(vehicle_id):
     query = select(Vehicles).where(Vehicles.id == vehicle_id)
     vehicle = db.session.execute(query).scalars().first()

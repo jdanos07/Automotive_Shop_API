@@ -5,7 +5,7 @@ from marshmallow import ValidationError
 from application.models import Mechanics, db
 from sqlalchemy import select
 
-@mechanics_bp.route("/mechanics", methods=['POST'])
+@mechanics_bp.route('/', methods=['POST'])
 def create_mechanic():
     try: 
         mechanic_data = mechanic_schema.load(request.json)
@@ -19,13 +19,13 @@ def create_mechanic():
 
     return mechanic_schema.jsonify(new_mechanic), 201
 
-@mechanics_bp.route('/mechanics', methods=['GET'])
+@mechanics_bp.route('/', methods=['GET'])
 def get_mechanics():
     query = select(Mechanics)
     result = db.session.execute(query).scalars().all()
     return mechanics_schema.jsonify(result), 200 
 
-@mechanics_bp.route('/mechanics/<int:mechanic_id>', methods=['GET'])
+@mechanics_bp.route('/<int:mechanic_id>', methods=['GET'])
 def get_Mechanic(mechanic_id):
     query = select(Mechanics).where(Mechanics.id == mechanic_id)
     mechanic = db.session.execute(query).scalars().first()
@@ -35,7 +35,7 @@ def get_Mechanic(mechanic_id):
     
     return mechanic_schema.jsonify(mechanic), 200
 
-@mechanics_bp.route('/mechanics/<int:mechanic_id>', methods=['PUT'])
+@mechanics_bp.route('/<int:mechanic_id>', methods=['PUT'])
 def update_mechanic(mechanic_id):
     query = select(Mechanics).where(Mechanics.id == mechanic_id)
     mechanic = db.session.execute(query).scalars().first()
@@ -58,7 +58,7 @@ def update_mechanic(mechanic_id):
     db.session.commit()
     return mechanic_schema.jsonify(mechanic), 200
 
-@mechanics_bp.route('/mechanics/<int:mechanic_id>', methods=['DELETE'])
+@mechanics_bp.route('/<int:mechanic_id>', methods=['DELETE'])
 def delete_mechanic(mechanic_id):
     query = select(Mechanics).where(Mechanics.id == mechanic_id)
     mechanic = db.session.execute(query).scalars().first()
