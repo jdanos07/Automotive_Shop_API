@@ -52,6 +52,7 @@ Install Dependencies:
 4) API Endpoints
    
   Customers
+  
     GET /customers – List all customers.
     
     POST /customers – Create a new customer.
@@ -63,6 +64,7 @@ Install Dependencies:
     DELETE /customers/<phone_number> – Delete a customer.
     
   Mechanics
+  
     GET /mechanics – List all mechanics.
     
     POST /mechanics – Create a new mechanic.
@@ -74,6 +76,7 @@ Install Dependencies:
     DELETE /mechanics/<employee_id> – Delete a mechanic.
     
   Service Tickets
+  
     GET /service_tickets – List all service tickets.
     
     POST /service_tickets – Create a new service ticket.
@@ -83,3 +86,15 @@ Install Dependencies:
     PUT /service_tickets/<ticket_id> – Update a service ticket.
     
     DELETE /service_tickets/<ticket_id> – Delete a service ticket.
+
+  Vehicles
+
+    GET /vehicles – List all vehicles.
+    
+    POST /vehicles – Create a new vehicles.
+    
+    GET /vehicles/<vin> – Retrieve a vehicles by VIN.
+    
+    PUT /vehicles/<vin> – Update a vehicles.
+    
+    DELETE /vehicles/<vin> – Delete a vehicle.
