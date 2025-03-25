@@ -13,7 +13,7 @@ def create_vehicle():
         return jsonify(e.messages), 400
     
     new_vehicle = Vehicles(
-        vin=vehicle_data['vin']
+        vin=vehicle_data['vin'],
         customer_phone=vehicle_data.get('customer_phone')
     )
     
