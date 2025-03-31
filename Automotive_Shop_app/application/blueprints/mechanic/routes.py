@@ -4,8 +4,10 @@ from flask import request, jsonify
 from marshmallow import ValidationError
 from application.models import Mechanics, db
 from sqlalchemy import select
+from application.extensions import limiter
 
 @mechanics_bp.route('/', methods=['POST'])
+@limiter.limit("2 per hour")
 def create_mechanic():
     try: 
         mechanic_data = mechanic_schema.load(request.json)

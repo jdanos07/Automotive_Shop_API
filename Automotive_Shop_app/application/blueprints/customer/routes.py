@@ -1,5 +1,6 @@
 from application.blueprints.customer import customers_bp
 from application.blueprints.customer.customerSchema import customer_schema, customers_schema
+from application.extensions import cache
 from flask import request, jsonify
 from marshmallow import ValidationError
 from application.models import Customers, db
@@ -24,6 +25,7 @@ def create_customer():
     return customer_schema.jsonify(new_customer), 201
 
 @customers_bp.route('/', methods=['GET'])
+@cache.cached(timeout=60)
 def get_customers():
     query = select(Customers)
     result = db.session.execute(query).scalars().all()
@@ -40,6 +42,7 @@ def get_Customer(phone_number):
         return customer_schema.jsonify(customer), 200
     
 @customers_bp.route('/<int:phone_number>', methods=['PUT'])
+@cache.cached(timeout=120)
 def update_customer(phone_number):
     query = select(Customers).where(Customers.phone_number == phone_number)
     customer = db.session.execute(query).scalars().first()
