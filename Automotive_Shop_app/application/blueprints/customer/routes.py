@@ -29,19 +29,19 @@ def get_customers():
     result = db.session.execute(query).scalars().all()
     return customers_schema.jsonify(result), 200 
 
-@customers_bp.route('/<int:Customer_id>', methods=['GET'])
-def get_Customer(customer_id):
-    query = select(Customers).where(Customers.id == customer_id)
+@customers_bp.route('/<int:phone_number>', methods=['GET'])
+def get_Customer(phone_number):
+    query = select(Customers).where(Customers.phone_number == phone_number)
     customer = db.session.execute(query).scalars().first()
     
     if customer == None:
         return jsonify({"message": "invalid Customer id"}), 400
     else:
-        return customers_schema.jsonify(customer), 200
+        return customer_schema.jsonify(customer), 200
     
-@customers_bp.route('/<int:customer_id>', methods=['PUT'])
-def update_customer(customer_id):
-    query = select(Customers).where(Customers.id == customer_id)
+@customers_bp.route('/<int:phone_number>', methods=['PUT'])
+def update_customer(phone_number):
+    query = select(Customers).where(Customers.phone_number == phone_number)
     customer = db.session.execute(query).scalars().first()
 
     if customer is None:
@@ -61,9 +61,9 @@ def update_customer(customer_id):
     db.session.commit()
     return customer_schema.jsonify(customer), 200
 
-@customers_bp.route('/<int:customer_id>', methods=['DELETE'])
-def delete_customer(customer_id):
-    query = select(Customers).where(Customers.id == customer_id)
+@customers_bp.route('/<int:phone_number>', methods=['DELETE'])
+def delete_customer(phone_number):
+    query = select(Customers).where(Customers.phone_number == phone_number)
     customer = db.session.execute(query).scalars().first()
 
     if customer is None:

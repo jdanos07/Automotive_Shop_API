@@ -30,9 +30,9 @@ def get_vehicles():
     return vehicles_schema.jsonify(result), 200 
 
 
-@vehicles_bp.route('/<int:Vehicle_id>', methods=['GET'])
-def get_vehicle(vehicle_id):
-    query = select(Vehicles).where(Vehicles.id == vehicle_id)
+@vehicles_bp.route('/<int:id>', methods=['GET'])
+def get_vehicle(id):
+    query = select(Vehicles).where(Vehicles.id == id)
     vehicle = db.session.execute(query).scalars().first()
     
     if vehicle == None:
@@ -68,6 +68,9 @@ def delete_vehicle(vehicle_id):
 
     if vehicle is None:
         return jsonify({"message": "Invalid vehicle ID"}), 400
+    
+    elif vehicle.service_tickets:
+        return jsonify({"message": "Cannot delete vehicle; service tickets exist."}), 400
 
     db.session.delete(vehicle)
     db.session.commit()

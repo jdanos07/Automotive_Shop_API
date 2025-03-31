@@ -37,16 +37,16 @@ def get_Mechanic(mechanic_id):
     
     if mechanic == None:
         return jsonify({"message": "invalid Mechanic id"}), 400
-    
-    return mechanic_schema.jsonify(mechanic), 200
+    else:
+        return mechanic_schema.jsonify(mechanic), 200
 
-@mechanics_bp.route('/<int:mechanic_id>', methods=['PUT'])
-def update_mechanic(mechanic_id):
-    query = select(Mechanics).where(Mechanics.id == mechanic_id)
+@mechanics_bp.route('/<int:id>', methods=['PUT'])
+def update_mechanic(id):
+    query = select(Mechanics).where(Mechanics.id == id)
     mechanic = db.session.execute(query).scalars().first()
 
     if mechanic is None:
-        return jsonify({"message": "Invalid mechanic ID"}), 400
+        return jsonify({"message": "Invalid Mechanic ID"}), 400
     
     try:
         mechanic_data = mechanic_schema.load(request.json, partial=True) 
