@@ -1,11 +1,40 @@
+from application.blueprints.service_ticket.service_ticketSchema import service_tickets_schema
 from application.blueprints.mechanic import mechanics_bp
-from application.blueprints.mechanic.mechanicSchema import mechanic_schema, mechanics_schema
+from application.blueprints.mechanic.mechanicSchema import mechanic_schema, mechanics_schema, login_schema
+from application.utils.util import encode_token, token_required
 from flask import request, jsonify
 from marshmallow import ValidationError
 from application.models import Mechanics, db
 from sqlalchemy import select
 from application.extensions import limiter
 
+
+@mechanics_bp.route('/login', methods=['POST'])
+def login():
+
+    
+    try:
+        credentials = login_schema.load(request.json)
+        email = credentials['email']
+        password = credentials['password']
+    except ValidationError as e:
+        return jsonify({'messages':'Invalid payload, expecting username and password'}), 400
+    
+    query = select(Mechanics).where(Mechanics.email == email)
+    mechanic = db.session.execute(query).scalar_one_or_none()
+
+    if mechanic and mechanic.password == password:
+        auth_token = encode_token(mechanic.id)
+
+        response = {
+            'status': 'success',
+            'message': 'Succesfully logged in',
+            'auth_token':auth_token
+        }
+        return jsonify(response), 200
+    else:
+        return jsonify({'messages': 'Invalid Username or Password'}), 401
+    
 @mechanics_bp.route('/', methods=['POST'])
 @limiter.limit("2 per hour")
 def create_mechanic():
@@ -15,10 +44,7 @@ def create_mechanic():
         return jsonify(e.messages), 400
     
     new_mechanic = Mechanics(
-        name=mechanic_data['name'],
-        phone_number=mechanic_data.get('phone_number'),
-        skill_level=mechanic_data['skill_level'],
-        hourly_rate=mechanic_data['hourly_rate']
+        **mechanic_data
     )
     
     db.session.add(new_mechanic)
@@ -42,7 +68,8 @@ def get_Mechanic(mechanic_id):
     else:
         return mechanic_schema.jsonify(mechanic), 200
 
-@mechanics_bp.route('/<int:id>', methods=['PUT'])
+@mechanics_bp.route('/', methods=['PUT'])
+@token_required
 def update_mechanic(id):
     query = select(Mechanics).where(Mechanics.id == id)
     mechanic = db.session.execute(query).scalars().first()
@@ -67,7 +94,8 @@ def update_mechanic(id):
     db.session.commit()
     return mechanic_schema.jsonify(mechanic), 200
 
-@mechanics_bp.route('/<int:mechanic_id>', methods=['DELETE'])
+@mechanics_bp.route('/', methods=['DELETE'])
+@token_required
 def delete_mechanic(mechanic_id):
     query = select(Mechanics).where(Mechanics.id == mechanic_id)
     mechanic = db.session.execute(query).scalars().first()
@@ -78,3 +106,17 @@ def delete_mechanic(mechanic_id):
     db.session.delete(mechanic)
     db.session.commit()
     return jsonify({"message": "Mechanic deleted successfully"}), 200
+
+@mechanics_bp.route('/tickets', methods=['GET'])
+@token_required
+def get_mechanic_tix(mechanic_id):
+    mechanic = db.session.get(Mechanics, mechanic_id)
+
+    if mechanic:
+    
+        service_tix = mechanic.service_tickets
+
+        return jsonify(service_tickets_schema.dump(service_tix)), 200
+
+    else:
+        return jsonify({"message": "Mechnanic is not in the system, or has no tickets."}), 400
