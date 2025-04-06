@@ -10,13 +10,12 @@ from application.extensions import limiter
 
 
 @mechanics_bp.route('/login', methods=['POST'])
-def login():
-
-    
+def login():  
     try:
         credentials = login_schema.load(request.json)
         email = credentials['email']
         password = credentials['password']
+        
     except ValidationError as e:
         return jsonify({'messages':'Invalid payload, expecting username and password'}), 400
     

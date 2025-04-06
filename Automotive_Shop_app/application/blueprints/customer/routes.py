@@ -36,11 +36,11 @@ def login():
     except ValidationError as e:
         return jsonify({'messages':'Invalid payload, expecting username and password'}), 400
     
-    query = select(Customers()).where(Customers().email == email)
+    query = select(Customers).where(Customers.email == email)
     customer = db.session.execute(query).scalar_one_or_none()
 
     if customer and customer.password == password:
-        auth_token = encode_token(customer.id)
+        auth_token = encode_token(customer.phone_number)
 
         response = {
             'status': 'success',
@@ -64,11 +64,11 @@ def get_Customer(phone_number):
     customer = db.session.execute(query).scalars().first()
     
     if customer == None:
-        return jsonify({"message": "invalid Customer id"}), 400
+        return jsonify({"messages": "invalid Customer id"}), 400
     else:
         return customer_schema.jsonify(customer), 200
     
-@customers_bp.route('/<int:phone_number>', methods=['PUT'])
+@customers_bp.route('/', methods=['PUT'])
 @token_required
 @cache.cached(timeout=120)
 def update_customer(phone_number):
@@ -76,7 +76,7 @@ def update_customer(phone_number):
     customer = db.session.execute(query).scalars().first()
 
     if customer is None:
-        return jsonify({"message": "Invalid customer ID"}), 400
+        return jsonify({"messages": "Invalid customer ID"}), 400
     
     try:
         customer_data = customer_schema.load(request.json, partial=True)
@@ -92,18 +92,18 @@ def update_customer(phone_number):
     db.session.commit()
     return customer_schema.jsonify(customer), 200
 
-@customers_bp.route('/<int:phone_number>', methods=['DELETE'])
+@customers_bp.route('/', methods=['DELETE'])
 @token_required
 def delete_customer(phone_number):
     query = select(Customers).where(Customers.phone_number == phone_number)
     customer = db.session.execute(query).scalars().first()
 
     if customer is None:
-        return jsonify({"message": "Invalid customer ID"}), 400
+        return jsonify({"messages": "Invalid customer ID"}), 400
 
     db.session.delete(customer)
     db.session.commit()
-    return jsonify({"message": "Customer deleted successfully"}), 200
+    return jsonify({"messages": "Customer deleted successfully"}), 200
     
 @customers_bp.route('/my_tickets', methods=['GET'])
 @token_required
@@ -112,6 +112,6 @@ def get_customerTickets(phone_number):
     customer = db.session.execute(query).scalars().all()
     
     if customer == None:
-        return jsonify({"message": "invalid Customer id"}), 400
+        return jsonify({"messages": "invalid Customer id"}), 400
     else:
         return customer_schema.jsonify(customer.service_tickets), 200
