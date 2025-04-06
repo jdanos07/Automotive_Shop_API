@@ -81,43 +81,21 @@
 				{
 					"name": "Update Customer",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDM5MjQ4OTgsImlhdCI6MTc0MzkyMTI5OCwic3ViIjoiMTIzNDU2Nzg5MSJ9.vfxONX8hXnH9u4dcf69uPnplg9SDDA1j3nYSn1ri9yU",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Johhn Doee\",\r\n    \"phone_number\": \"1234567891\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://127.0.0.1:5000/customers/1234567892",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "5000",
-							"path": [
-								"customers",
-								"1234567892"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Customer",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"phone_number\": \"1234567892\",\r\n  \"name\": \"John Doe\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Johhn Doee\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -142,8 +120,81 @@
 					"response": []
 				},
 				{
+					"name": "Create Customer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"phone_number\": \"1234567891\",\r\n  \"name\": \"John Doe\",\r\n  \"email\": \"j0d@email.com\",\r\n  \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/customers",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Customer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"j0d@email.com\",\r\n  \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/customers/login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"customers",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Delete Customer",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDM5MjQ4OTgsImlhdCI6MTc0MzkyMTI5OCwic3ViIjoiMTIzNDU2Nzg5MSJ9.vfxONX8hXnH9u4dcf69uPnplg9SDDA1j3nYSn1ri9yU",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"body": {
@@ -156,7 +207,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/customers/1234567892",
+							"raw": "http://127.0.0.1:5000/customers",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -166,8 +217,7 @@
 							],
 							"port": "5000",
 							"path": [
-								"customers",
-								"1234567892"
+								"customers"
 							]
 						}
 					},
@@ -219,7 +269,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"customer_phone\": \"3216549877\"\r\n}",
+							"raw": "{\r\n    \"customer_phone\": 1234567891\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -227,7 +277,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/vehicles/2",
+							"raw": "http://127.0.0.1:5000/vehicles/1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -238,7 +288,7 @@
 							"port": "5000",
 							"path": [
 								"vehicles",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -278,6 +328,45 @@
 				},
 				{
 					"name": "Create Vehicle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `\r",
+									"<style type=\"text/css\">\r",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+									"    .tftable tr {background-color:#ffffff;}\r",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+									"    .tftable tr:hover {background-color:#e0ffff;}\r",
+									"</style>\r",
+									"\r",
+									"<table class=\"tftable\" border=\"1\">\r",
+									"    <tr>\r",
+									"        <th>Error Message</th>\r",
+									"    </tr>\r",
+									"    \r",
+									"    <tr>\r",
+									"        <td>{{response.customer_phone}}</td>\r",
+									"    </tr>\r",
+									"</table>\r",
+									"`;\r",
+									"\r",
+									"function constructVisualizerPayload() {\r",
+									"    return {response: pm.response.json()}\r",
+									"}\r",
+									"\r",
+									"pm.visualizer.set(template, constructVisualizerPayload());\r",
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -455,7 +544,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"phone_number\": \"5551234567\",\r\n    \"name\": \"Jane Smith\",\r\n    \"skill_level\": \"Master\",\r\n    \"hourly_rate\": 75\r\n}",
+							"raw": "{\r\n    \"phone_number\": \"5551234567\",\r\n    \"name\": \"Jane Smith\",\r\n    \"skill_level\": \"Master\",\r\n    \"hourly_rate\": 75,\r\n    \"email\": \"jsmith@email.com\",\r\n    \"password\": \"password\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -482,6 +571,16 @@
 				{
 					"name": "Delete Mechanics",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDM2NzYxMDMsImlhdCI6MTc0MzY3MjUwMywic3ViIjoiNSJ9.HScFU_Yw_ShgyT6rJCHrx9St_WXCnt2vshlSmIuCz58",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"body": {
@@ -494,7 +593,41 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/mechanics/1",
+							"raw": "http://127.0.0.1:5000/mechanics",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"mechanics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Mechanics",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"jsmith@email.com\",\r\n    \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/mechanics/login",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -505,7 +638,40 @@
 							"port": "5000",
 							"path": [
 								"mechanics",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Mechanic's Tickets",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDM2NzgyMTMsImlhdCI6MTc0MzY3NDYxMywic3ViIjoiNyJ9.PhpdGcA5Ov8ZuYECYf4nQAya1sutFS4rmCBe8nI7zBU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/mechanics/tickets",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
 								"1"
+							],
+							"port": "5000",
+							"path": [
+								"mechanics",
+								"tickets"
 							]
 						}
 					},
@@ -624,7 +790,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"customer_phone\": \"1234567890\",\r\n    \"mechanic_id\": 2,\r\n    \"vin\": \"1HGCM82633A004352\",\r\n    \"services\": \"Oil change and tire rotation\"\r\n}",
+							"raw": "{\r\n    \"customer_phone\": \"1234567890\",\r\n    \"mechanic_id\": 7,\r\n    \"vin\": \"1HGCM82633A004352\",\r\n    \"services\": \"Oil change and tire rotation\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
