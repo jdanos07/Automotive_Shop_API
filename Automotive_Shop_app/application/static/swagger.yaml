@@ -1,0 +1,765 @@
+swagger: "2.0"
+info:
+  title: Automotive Repair Shop API
+  version: "1.0"
+  description: This API allows you to manage all facets of an Automive Repair Shop.
+host: 127.0.0.1:5000
+basePath: /
+schemes:
+  - http
+securityDefinitions:
+  BearerAuth:
+    type: apiKey
+    name: Authorization
+    in: header
+paths:
+  /customers:
+    post:
+      tags:
+        - Customers
+      summary: Create a new customer
+      description: Create a customer with the provided details.
+      parameters:
+        - in: body
+          name: body
+          description: Customer details for creating a new customer.
+          required: true
+          schema:
+            $ref: "#/definitions/CustomerInput"
+      responses:
+        "201":
+          description: Customer created successfully.
+          schema:
+            $ref: "#/definitions/Customer"
+        "400":
+          description: Invalid input.
+    get:
+      tags:
+        - Customers
+      summary: Retrieve all customers
+      responses:
+        "200":
+          description: A list of customers.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Customer"
+    put:
+      tags:
+        - Customers
+      summary: Update customer information (requires authentication)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: body
+          name: body
+          description: Customer fields to update.
+          required: true
+          schema:
+            $ref: "#/definitions/CustomerUpdate"
+      responses:
+        "200":
+          description: Customer updated successfully.
+          schema:
+            $ref: "#/definitions/Customer"
+        "400":
+          description: Invalid customer ID or input.
+    delete:
+      tags:
+        - Customers
+      summary: Delete a customer (requires authentication & login)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: body
+          name: body
+          descripition: Information to update a customer.    
+          required: true          
+      responses:
+        "200":
+          description: Customer deleted successfully.
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+        "400":
+          description: Invalid customer ID.
+  /customers/login:
+    post:
+      tags:
+        - Customers
+      summary: Customer login
+      parameters:
+        - in: body
+          name: body
+          description: Login credentials.
+          required: true
+          schema:
+            $ref: "#/definitions/LoginInput"
+      responses:
+        "200":
+          description: Successfully logged in.
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+              message:
+                type: string
+              auth_token:
+                type: string
+        "400":
+          description: Invalid payload.
+        "401":
+          description: Invalid username or password.
+  /customers/{phone_number}:
+    get:
+      tags:
+        - Customers
+      summary: Get a customer by phone number
+      parameters:
+        - in: path
+          name: phone_number
+          type: string
+          required: true
+          description: The customer's phone number.
+      responses:
+        "200":
+          description: Customer retrieved successfully.
+          schema:
+            $ref: "#/definitions/Customer"
+        "400":
+          description: Invalid customer id.
+  /customers/my_tickets:
+    get:
+      tags:
+        - Customers
+      summary: Get service tickets for the authenticated customer (requires authentication)
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: A list of service tickets for the customer.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ServiceTicket"
+        "400":
+          description: Invalid customer id or no tickets found.
+  /inventory/:
+    post:
+      tags:
+        - Inventory
+      summary: Create a new consumable
+      parameters:
+        - in: body
+          name: body
+          description: Consumable details.
+          required: true
+          schema:
+            $ref: "#/definitions/ConsumableInput"
+      responses:
+        "201":
+          description: Consumable created successfully.
+          schema:
+            $ref: "#/definitions/Consumable"
+        "400":
+          description: Invalid input.
+    get:
+      tags:
+        - Inventory
+      summary: Get all consumables
+      responses:
+        "200":
+          description: A list of consumables.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Consumable"
+  /inventory/{id}:
+    get:
+      tags:
+        - Inventory
+      summary: Get a consumable by ID
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: The consumable ID.
+      responses:
+        "200":
+          description: Consumable retrieved successfully.
+          schema:
+            $ref: "#/definitions/Consumable"
+        "400":
+          description: Invalid consumable id.
+    put:
+      tags:
+        - Inventory
+      summary: Update a consumable by ID
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: The consumable ID.
+        - in: body
+          name: body
+          description: Fields to update for the consumable.
+          required: true
+          schema:
+            $ref: "#/definitions/ConsumableUpdate"
+      responses:
+        "200":
+          description: Consumable updated successfully.
+          schema:
+            $ref: "#/definitions/Consumable"
+        "400":
+          description: Invalid consumable id or input.
+    delete:
+      tags:
+        - Inventory
+      summary: Delete a consumable by ID
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: The consumable ID.
+      responses:
+        "200":
+          description: Consumable deleted successfully.
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+        "400":
+          description: Invalid consumable id.
+  /mechanics/:
+    post:
+      tags:
+        - Mechanics
+      summary: Create a new mechanic
+      parameters:
+        - in: body
+          name: body
+          description: Mechanic details.
+          required: true
+          schema:
+            $ref: "#/definitions/MechanicInput"
+      responses:
+        "201":
+          description: Mechanic created successfully.
+          schema:
+            $ref: "#/definitions/Mechanic"
+        "400":
+          description: Invalid input.
+    get:
+      tags:
+        - Mechanics
+      summary: Get all mechanics
+      responses:
+        "200":
+          description: A list of mechanics.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Mechanic"
+    put:
+      tags:
+        - Mechanics
+      summary: Update mechanic information (requires authentication)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: body
+          name: body
+          description: Mechanic fields to update.
+          required: true
+          schema:
+            $ref: "#/definitions/MechanicUpdate"
+      responses:
+        "200":
+          description: Mechanic updated successfully.
+          schema:
+            $ref: "#/definitions/Mechanic"
+        "400":
+          description: Invalid mechanic id or input.
+    delete:
+      tags:
+        - Mechanics
+      summary: Delete a mechanic (requires authentication)
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Mechanic deleted successfully.
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+        "400":
+          description: Invalid mechanic id.
+  /mechanics/login:
+    post:
+      tags:
+        - Mechanics
+      summary: Mechanic login
+      parameters:
+        - in: body
+          name: body
+          description: Mechanic login credentials.
+          required: true
+          schema:
+            $ref: "#/definitions/MechanicLoginInput"
+      responses:
+        "200":
+          description: Successfully logged in.
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+              message:
+                type: string
+              auth_token:
+                type: string
+        "400":
+          description: Invalid payload.
+        "401":
+          description: Invalid username or password.
+  /mechanics/{mechanic_id}:
+    get:
+      tags:
+        - Mechanics
+      summary: Get a mechanic by ID
+      parameters:
+        - in: path
+          name: mechanic_id
+          type: integer
+          required: true
+          description: The mechanic ID.
+      responses:
+        "200":
+          description: Mechanic retrieved successfully.
+          schema:
+            $ref: "#/definitions/Mechanic"
+        "400":
+          description: Invalid mechanic id.
+  /mechanics/tickets:
+    get:
+      tags:
+        - Mechanics
+      summary: Get service tickets for the authenticated mechanic (requires authentication)
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: A list of service tickets assigned to the mechanic.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ServiceTicket"
+        "400":
+          description: Mechanic not found or no tickets.
+  /service_tickets/:
+    post:
+      tags:
+        - Service Tickets
+      summary: Create a new service ticket
+      parameters:
+        - in: body
+          name: body
+          description: Service ticket details.
+          required: true
+          schema:
+            $ref: "#/definitions/ServiceTicketInput"
+      responses:
+        "201":
+          description: Service ticket created successfully.
+          schema:
+            $ref: "#/definitions/ServiceTicket"
+        "400":
+          description: Invalid input or foreign key constraint error.
+    get:
+      tags:
+        - Service Tickets
+      summary: Get all service tickets
+      responses:
+        "200":
+          description: A list of service tickets.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ServiceTicket"
+  /service_tickets/{ticket_id}:
+    get:
+      tags:
+        - Service Tickets
+      summary: Get a service ticket by ID
+      parameters:
+        - in: path
+          name: ticket_id
+          type: integer
+          required: true
+          description: The service ticket ID.
+      responses:
+        "200":
+          description: Service ticket retrieved successfully.
+          schema:
+            $ref: "#/definitions/ServiceTicket"
+        "400":
+          description: Invalid service ticket id.
+    put:
+      tags:
+        - Service Tickets
+      summary: Update a service ticket by ID
+      parameters:
+        - in: path
+          name: ticket_id
+          type: integer
+          required: true
+          description: The service ticket ID.
+        - in: body
+          name: body
+          description: Fields to update for the service ticket.
+          required: true
+          schema:
+            $ref: "#/definitions/ServiceTicketUpdate"
+      responses:
+        "200":
+          description: Service ticket updated successfully.
+          schema:
+            $ref: "#/definitions/ServiceTicket"
+        "400":
+          description: Invalid service ticket id or input.
+    delete:
+      tags:
+        - Service Tickets
+      summary: Delete a service ticket by ID
+      parameters:
+        - in: path
+          name: ticket_id
+          type: integer
+          required: true
+          description: The service ticket ID.
+      responses:
+        "200":
+          description: Service ticket deleted successfully.
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+        "400":
+          description: Invalid service ticket id.
+  /vehicles/:
+    post:
+      tags:
+        - Vehciles
+      summary: Create a new vehicle
+      description: Creates a new vehicle record.
+      parameters:
+        - in: body
+          name: body
+          description: Vehicle details to create a new vehicle.
+          required: true
+          schema:
+            $ref: "#/definitions/VehicleInput"
+      responses:
+        "201":
+          description: Vehicle created successfully.
+          schema:
+            $ref: "#/definitions/Vehicle"
+        "400":
+          description: Invalid input.
+    get:
+      tags:
+        - Vehciles
+      summary: Retrieve all vehicles
+      description: Retrieves a list of all vehicles.
+      responses:
+        "200":
+          description: A list of vehicles.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Vehicle"
+  /vehicles/{id}:
+    get:
+      tags:
+        - Vehciles
+      summary: Retrieve a vehicle by ID
+      description: Gets a single vehicle by its ID.
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: The ID of the vehicle to retrieve.
+      responses:
+        "200":
+          description: Vehicle retrieved successfully.
+          schema:
+            $ref: "#/definitions/Vehicle"
+        "400":
+          description: Invalid vehicle ID.
+    put:
+      tags:
+        - Vehciles
+      summary: Update an existing vehicle
+      description: Updates vehicle fields for the given vehicle ID.
+      parameters:
+        - in: path
+          name: vehicle_id
+          type: integer
+          required: true
+          description: The ID of the vehicle to update.
+        - in: body
+          name: body
+          description: Vehicle fields to update.
+          required: true
+          schema:
+            $ref: "#/definitions/VehicleUpdate"
+      responses:
+        "200":
+          description: Vehicle updated successfully.
+          schema:
+            $ref: "#/definitions/Vehicle"
+        "400":
+          description: Invalid vehicle ID or input.
+    delete:
+      tags:
+        - Vehciles
+      summary: Delete a vehicle
+      description: Deletes the vehicle with the given ID. If the vehicle has associated service tickets, deletion is not allowed.
+      parameters:
+        - in: path
+          name: vehicle_id
+          type: integer
+          required: true
+          description: The ID of the vehicle to delete.
+      responses:
+        "200":
+          description: Vehicle deleted successfully.
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+        "400":
+          description: Invalid vehicle ID or vehicle cannot be deleted.
+definitions:
+  Customer:
+    type: object
+    properties:
+      name:
+        type: string
+      phone_number:
+        type: string
+      email:
+        type: string
+    required:
+      - name
+      - phone_number
+      - email
+  CustomerInput:
+    type: object
+    properties:
+      name:
+        type: string
+      phone_number:
+        type: string
+      password:
+        type: string
+      email:
+        type: string
+    required:
+      - name
+      - phone_number
+      - password
+      - email
+  CustomerUpdate:
+    type: object
+    properties:
+      name:
+        type: string
+      phone_number:
+        type: string
+    description: Optional fields to update.
+  LoginInput:
+    type: object
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+      - email
+      - password
+  Consumable:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+    required:
+      - id
+      - name
+      - price
+  ConsumableInput:
+    type: object
+    properties:
+      name:
+        type: string
+      price:
+        type: number
+    required:
+      - name
+      - price
+  ConsumableUpdate:
+    type: object
+    properties:
+      name:
+        type: string
+      price:
+        type: number
+  Mechanic:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      phone_number:
+        type: string
+      skill_level:
+        type: string
+      hourly_rate:
+        type: number
+      email:
+        type: string
+    required:
+      - id
+      - name
+      - phone_number
+      - email
+  MechanicInput:
+    type: object
+    properties:
+      name:
+        type: string
+      phone_number:
+        type: string
+      skill_level:
+        type: string
+      hourly_rate:
+        type: number
+      email:
+        type: string
+      password:
+        type: string
+    required:
+      - name
+      - phone_number
+      - email
+      - password
+  MechanicUpdate:
+    type: object
+    properties:
+      name:
+        type: string
+      phone_number:
+        type: string
+      skill_level:
+        type: string
+      hourly_rate:
+        type: number
+  MechanicLoginInput:
+    type: object
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+      - email
+      - password
+  ServiceTicket:
+    type: object
+    properties:
+      ticket_id:
+        type: integer
+      customer_phone:
+        type: string
+      vin:
+        type: string
+      services:
+        type: string
+    required:
+      - ticket_id
+      - customer_phone
+      - services
+  ServiceTicketInput:
+    type: object
+    properties:
+      customer_phone:
+        type: string
+      vin:
+        type: string
+      services:
+        type: string
+    required:
+      - customer_phone
+      - services
+  ServiceTicketUpdate:
+    type: object
+    properties:
+      customer_phone:
+        type: string
+      vin:
+        type: string
+      services:
+        type: string
+  Vehicle:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Unique identifier for the vehicle.
+      vin:
+        type: string
+        description: Vehicle Identification Number.
+      customer_phone:
+        type: string
+        description: Phone number of the customer associated with the vehicle.
+    required:
+      - vin
+  VehicleInput:
+    type: object
+    properties:
+      vin:
+        type: string
+        description: Vehicle Identification Number.
+      customer_phone:
+        type: string
+        description: Phone number of the customer (optional).
+    required:
+      - vin
+  VehicleUpdate:
+    type: object
+    properties:
+      vin:
+        type: string
+        description: Updated Vehicle Identification Number.
+      customer_phone:
+        type: string
+        description: Updated customer phone number.
+    description: Fields that can be updated for a vehicle.

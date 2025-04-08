@@ -38,7 +38,7 @@ class Customers(Base):
     password: Mapped[str] = mapped_column(db.String(25))
     email: Mapped[str] = mapped_column(db.String(100), unique=True)
 
-    service_tickets: Mapped[List["Service_Tickets"]] = relationship("Service_Tickets", back_populates = "customer", cascade="all, delete")
+    service_tickets: Mapped[List["Service_Tickets"]] = relationship("Service_Tickets", back_populates = "customer")
     vehicles: Mapped[List["Vehicles"]] = relationship("Vehicles", back_populates = "customer", foreign_keys = [Vehicles.customer_phone], cascade="all, delete")
 
 class Mechanics(Base):

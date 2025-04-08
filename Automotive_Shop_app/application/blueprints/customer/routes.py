@@ -6,6 +6,8 @@ from flask import request, jsonify
 from marshmallow import ValidationError
 from application.models import Customers, db
 from sqlalchemy import select
+from sqlalchemy.orm import joinedload
+from application.blueprints.service_ticket.service_ticketSchema import service_ticket_schema
 
 @customers_bp.route('/', methods=['POST'])
 def create_customer():
@@ -108,10 +110,13 @@ def delete_customer(phone_number):
 @customers_bp.route('/my_tickets', methods=['GET'])
 @token_required
 def get_customerTickets(phone_number):
+    print (f"Phone number from token: {phone_number}")
+
     query = select(Customers).where(Customers.phone_number == phone_number)
-    customer = db.session.execute(query).scalars().all()
-    
-    if customer == None:
+    customer = db.session.execute(query).scalar_one_or_none()
+
+
+    if customer is None:
         return jsonify({"messages": "invalid Customer id"}), 400
     else:
         return customer_schema.jsonify(customer.service_tickets), 200
