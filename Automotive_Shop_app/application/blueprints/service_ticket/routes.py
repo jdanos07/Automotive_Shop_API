@@ -69,6 +69,8 @@ def update_service_ticket(ticket_id):
         service_ticket.services = ticket_data['services']
     if 'vin' in ticket_data:
         service_ticket.vin = ticket_data['vin']
+    if 'consumables' in ticket_data:
+        service_ticket.consumables = ticket_data['consumables']
 
     db.session.commit()
     return service_ticket_schema.jsonify(service_ticket), 200

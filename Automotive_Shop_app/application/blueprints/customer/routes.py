@@ -4,10 +4,10 @@ from application.extensions import cache
 from application.utils.util import encode_token, token_required
 from flask import request, jsonify
 from marshmallow import ValidationError
-from application.models import Customers, db
+from application.models import Customers, Service_Tickets, db
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
-from application.blueprints.service_ticket.service_ticketSchema import service_ticket_schema
+from application.blueprints.service_ticket.service_ticketSchema import service_tickets_schema
 
 @customers_bp.route('/', methods=['POST'])
 def create_customer():
@@ -110,7 +110,6 @@ def delete_customer(phone_number):
 @customers_bp.route('/my_tickets', methods=['GET'])
 @token_required
 def get_customerTickets(phone_number):
-    print (f"Phone number from token: {phone_number}")
 
     query = select(Customers).where(Customers.phone_number == phone_number)
     customer = db.session.execute(query).scalar_one_or_none()
@@ -119,4 +118,4 @@ def get_customerTickets(phone_number):
     if customer is None:
         return jsonify({"messages": "invalid Customer id"}), 400
     else:
-        return customer_schema.jsonify(customer.service_tickets), 200
+        return service_tickets_schema.jsonify(customer.service_tickets), 200
