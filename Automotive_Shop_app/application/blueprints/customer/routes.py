@@ -4,9 +4,8 @@ from application.extensions import cache
 from application.utils.util import encode_token, token_required
 from flask import request, jsonify
 from marshmallow import ValidationError
-from application.models import Customers, Service_Tickets, db
+from application.models import Customers, db
 from sqlalchemy import select
-from sqlalchemy.orm import joinedload
 from application.blueprints.service_ticket.service_ticketSchema import service_tickets_schema
 
 @customers_bp.route('/', methods=['POST'])

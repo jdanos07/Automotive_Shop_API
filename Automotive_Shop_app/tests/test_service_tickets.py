@@ -2,7 +2,7 @@ from application import create_app
 from application.models import db
 import unittest
 
-class TestInventory(unittest.TestCase):
+class TestServiceTickets(unittest.TestCase):
     def setUp(self):
         self.app = create_app('TestingConfig')
         with self.app.app_context():
@@ -10,62 +10,58 @@ class TestInventory(unittest.TestCase):
             db.create_all()
         self.client = self.app.test_client()
 
-    def test_create_inventory(self):
-        inventory_payload = {
-            'name': 'oil',
-            'price': 2.50
-        }
+    def test_create_service_ticket(self):
+        service_ticket_payload = {'customer_phone': '1234567890', 'vin': '1234567890abcdefg', 'services': 'test'}
 
-        post_response = self.client.post('/inventory/', json = inventory_payload)
+        post_response = self.client.post('/service_tickets/', json = service_ticket_payload)
         self.assertEqual(post_response.status_code, 201)
-        self.assertEqual(post_response.json['name'], 'oil')
+        self.assertEqual(post_response.json['customer_phone'], '1234567890')
 
     def test_invalid_creation(self):
-        inventory_payload = {
-            'name': 'oil'      
-        }
+        service_ticket_payload = {'services': 'test'}
 
-        response = self.client.post('/inventory/', json=inventory_payload)
+
+        response = self.client.post('/service_tickets/', json=service_ticket_payload)
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json['price'], ['Missing data for required field.'])
+        self.assertEqual(response.json['customer_phone'], ['Missing data for required field.'])
 
-    def test_get_all_inventory(self):
-        response = self.client.get('/inventory/')
+    def test_get_all_service_ticket(self):
+        response = self.client.get('/service_tickets/')
         self.assertEqual(response.status_code, 200)
 
     def test_get_one_consumalbe(self):
-        inventory_payload = {'name': 'test', 'price': 2.50}
-        post_respsonse = self.client.post('/inventory/', json=inventory_payload)
+        service_ticket_payload = {'customer_phone': '1234567890', 'vin': '1234567890abcdefg', 'services': 'test'}
+        post_respsonse = self.client.post('/service_tickets/', json=service_ticket_payload)
         self.assertEqual(post_respsonse.status_code, 201)
 
-        consumable = post_respsonse.get_json()
-        consumable_id = consumable['id']       
+        service_ticket = post_respsonse.get_json()
+        service_ticket_id = service_ticket['ticket_id']       
         
-        response = self.client.get(f'/inventory/{consumable_id}')
+        response = self.client.get(f'/service_tickets/{service_ticket_id}')
         self.assertEqual(response.status_code, 200)
 
-    def test_update_consumable(self):
-        inventory_payload = {'name': 'test', 'price': 2.50}
-        post_respsonse = self.client.post('/inventory/', json=inventory_payload)
+    def test_update_service_ticket(self):
+        service_ticket_payload = {'customer_phone': '1234567890', 'vin': '1234567890abcdefg', 'services': 'test'}
+        post_respsonse = self.client.post('/service_tickets/', json=service_ticket_payload)
         self.assertEqual(post_respsonse.status_code, 201)
 
-        consumable = post_respsonse.get_json()
-        consumable_id = consumable['id']  
+        service_ticket = post_respsonse.get_json()
+        service_ticket_id = service_ticket['ticket_id']  
 
-        updated_payload = {'name': 'best', 'price': 3.01}     
+        updated_payload = {'customer_phone': '1234567890', 'vin': '1234567890abcdefg', 'services': 'toast'}
         
-        response = self.client.put(f'/inventory/{consumable_id}', json=updated_payload)
+        response = self.client.put(f'/service_tickets/{service_ticket_id}', json=updated_payload)
         self.assertEqual(response.status_code, 200)
 
-    def test_delete_consumable(self):
-        inventory_payload = {'name': 'test', 'price': 2.50}
-        post_respsonse = self.client.post('/inventory/', json=inventory_payload)
+    def test_delete_service_ticket(self):
+        service_ticket_payload = {'customer_phone': '1234567890', 'vin': '1234567890abcdefg', 'services': 'test'}
+        post_respsonse = self.client.post('/service_tickets/', json=service_ticket_payload)
         self.assertEqual(post_respsonse.status_code, 201)
 
-        consumable = post_respsonse.get_json()
-        consumable_id = consumable['id']       
+        service_ticket = post_respsonse.get_json()
+        service_ticket_id = service_ticket['ticket_id']       
         
-        response = self.client.delete(f'/inventory/{consumable_id}')
+        response = self.client.delete(f'/service_tickets/{service_ticket_id}')
         self.assertEqual(response.status_code, 200)
 
 if __name__ == '__main__':
