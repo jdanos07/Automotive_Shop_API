@@ -16,8 +16,8 @@ inventory_service_tix = db.Table(
 
 mechanic_service_tix = db.Table(
     "mechanic_service_tix", Base.metadata,
-    db.Column("mechanics", db.ForeignKey("mechanic.id")),
-    db.Column("ticket_id", db.ForeignKey("service_ticket.ticket_id"))
+    db.Column("mechanic_id", db.ForeignKey("mechanic.id"), primary_key=True),
+    db.Column("ticket_id", db.ForeignKey("service_ticket.ticket_id"), primary_key=True)
 )
 
 class Vehicles(Base):
@@ -52,7 +52,11 @@ class Mechanics(Base):
     email: Mapped[str] = mapped_column(db.String(100), unique=True)
     password: Mapped[str] = mapped_column(db.String(25))
 
-    service_tickets: Mapped[List["Service_Tickets"]] = relationship("Service_Tickets", secondary=mechanic_service_tix, back_populates = "mechanics")
+    service_tickets: Mapped[List["Service_Tickets"]] = relationship(
+        "Service_Tickets",
+        secondary=mechanic_service_tix,
+        back_populates="mechanics"
+    )
 
 class Service_Tickets(Base):
     __tablename__ = "service_ticket"
@@ -61,11 +65,16 @@ class Service_Tickets(Base):
     customer_phone: Mapped[str] = mapped_column(db.String(11), db.ForeignKey("customer.phone_number"))
     vin: Mapped[str] = mapped_column(db.ForeignKey("vehicle.vin"), nullable=True)
     services: Mapped[str] = mapped_column(db.String(10000))
-
+    
+    mechanics: Mapped[List["Mechanics"]] = relationship(
+        "Mechanics",
+        secondary=mechanic_service_tix,
+        back_populates="service_tickets"
+    )
+    
     customer: Mapped["Customers"] = relationship("Customers", back_populates = "service_tickets")
-    mechanics: Mapped[List["Mechanics"]] = relationship("Mechanics", secondary=mechanic_service_tix, back_populates = "service_tickets")
     vehicle: Mapped["Vehicles"] = relationship("Vehicles", back_populates = "service_tickets", foreign_keys=[vin])
-    consumables: Mapped["Inventory"] = relationship("Inventory", secondary=inventory_service_tix, back_populates = "service_tickets", cascade="all, delete")
+    consumables: Mapped["Inventory"] = relationship("Inventory", secondary = inventory_service_tix, back_populates = "service_tickets", cascade="all, delete")
 
 class Inventory(Base):
     __tablename__ = "consumable"

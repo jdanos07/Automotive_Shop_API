@@ -1,8 +1,8 @@
 from application.blueprints.service_ticket import service_tickets_bp
-from application.blueprints.service_ticket.service_ticketSchema import service_ticket_schema, service_tickets_schema
+from application.blueprints.service_ticket.service_ticketSchema import service_ticket_schema, service_tickets_schema, edit_ticket_mechanics_schema
 from flask import request, jsonify
 from marshmallow import ValidationError
-from application.models import Mechanics, Service_Tickets, db
+from application.models import Mechanics, Service_Tickets, db, mechanic_service_tix
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 
@@ -20,12 +20,11 @@ def create_service_ticket():
     except IntegrityError as err:
         db.session.rollback()
         error_str = str(err.orig)
-        if 'customer' in error_str.lower():
-            return jsonify({'message': 'Customer information must be input before a ticket can be created. '}), 400
+        if 'customer_phone' in error_str.lower():
+            return jsonify({'message': 'Customer information must be input before a ticket can be created.'}), 400
         elif 'vin' in error_str.lower():
             return jsonify({'message': 'Vehicle information must be input before a ticket can be created.'}), 400
-        elif 'mechanic' in error_str.lower():
-            return jsonify({'message': 'Current Mechanic ID must be provided.'}), 400
+ 
         else:
             return jsonify({'message': 'A foreign key constraint failed.', 'details': error_str}), 400
 
@@ -75,30 +74,27 @@ def update_service_ticket(ticket_id):
 
 @service_tickets_bp.route('/<int:ticket_id>/edit', methods=['PUT'])
 def update_service_ticket_mechanic(ticket_id):
-    query = select(Service_Tickets).where(Service_Tickets.ticket_id == ticket_id)
-    service_ticket = db.session.execute(query).scalars().first()
+    service_ticket = db.session.get(Service_Tickets, ticket_id)
 
     if service_ticket is None:
         return jsonify({'message': 'Invalid Service Ticket ID'}), 400
     
     try:
-        ticket_data = service_ticket_schema.load(request.json, partial=True)
+        query = edit_ticket_mechanics_schema.load(request.json)
     except ValidationError as e:
         return jsonify(e.messages), 400
+    
+    mechanic_id = query['mechanic_id']
+    mechanic = db.session.get(Mechanics, mechanic_id)
 
-    if 'mechanic_id' in ticket_data:
-        mechanic_id = ticket_data['mechanic_id']
-        mechanic = Mechanics.query.get(mechanic_id)
-        if mechanic is None:
-            return jsonify({'message': 'Invalid Mechanic ID'}), 400
-        
-        if mechanic in service_ticket.mechanics:
-            service_ticket.mechanics.remove(mechanic)
-        else:
-            service_ticket.mechanics.append(mechanic)
-
-    else:
+    if not mechanic:
         return jsonify({'message': 'No Mechanic ID provided.'}), 400
+    
+    if mechanic in service_ticket.mechanics:
+        service_ticket.mechanics.remove(mechanic)
+    else:
+        service_ticket.mechanics.append(mechanic)
+
     db.session.commit()
 
     return service_ticket_schema.dump(service_ticket), 200

@@ -1026,6 +1026,39 @@
 					"response": []
 				},
 				{
+					"name": "Update Service Ticket: Edit Mechanic",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mechanic_id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/service_tickets/2/edit",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"service_tickets",
+								"2",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create Service Ticket",
 					"request": {
 						"method": "POST",
