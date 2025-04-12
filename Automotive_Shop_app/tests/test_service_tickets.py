@@ -29,7 +29,7 @@ class TestServiceTickets(unittest.TestCase):
         response = self.client.get('/service_tickets/')
         self.assertEqual(response.status_code, 200)
 
-    def test_get_one_consumalbe(self):
+    def test_get_one_service_ticket(self):
         service_ticket_payload = {'customer_phone': '1234567890', 'vin': '1234567890abcdefg', 'services': 'test'}
         post_respsonse = self.client.post('/service_tickets/', json=service_ticket_payload)
         self.assertEqual(post_respsonse.status_code, 201)
@@ -51,6 +51,19 @@ class TestServiceTickets(unittest.TestCase):
         updated_payload = {'customer_phone': '1234567890', 'vin': '1234567890abcdefg', 'services': 'toast'}
         
         response = self.client.put(f'/service_tickets/{service_ticket_id}', json=updated_payload)
+        self.assertEqual(response.status_code, 200)
+    
+    def test_edit_service_ticket_mechanic(self):
+        service_ticket_payload = {'customer_phone': '1234567890', 'vin': '1234567890abcdefg', 'services': 'test'}
+        post_repsonse = self.client.post('/service_tickets/', json=service_ticket_payload)
+        self.assertEqual(post_repsonse.status_code, 201)
+
+        service_ticket = post_repsonse.get_json()
+        service_ticket_id = service_ticket['ticket_id']
+
+        edit_payload = {'mechanic_id': 1}
+
+        response = self.client.put(f'/service_tickets/{service_ticket_id}/edit', json=edit_payload)
         self.assertEqual(response.status_code, 200)
 
     def test_delete_service_ticket(self):
