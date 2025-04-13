@@ -457,11 +457,11 @@ paths:
                 type: string
         "400":
           description: Invalid service ticket id.
- /service_tickets/{ticket_id}/edit:
+  /service_tickets/{ticket_id}/edit:
     put:
       tags:
         - Service Tickets
-      summary: Update a service ticket's mechanic by ticket id and mechanic id. If the Mechanic ID is present, the mechanic will be removed. If the not, the mechanic will be added.
+      summary: Update a service ticket's mechanic(s) by ticket ID and mechanic ID. If the Mechanic ID is True, remove. Else, add.
       parameters:
         - in: path
           name: ticket_id
@@ -473,7 +473,7 @@ paths:
           description: Mechanic ID to either add or remove depending on that mechanics previous association with the ticket id. 
           required: true
           schema:
-            $ref: "#/definitions/ServiceTicketUpdate"
+            $ref: "#/definitions/ServiceTicketEdit"
       responses:
         "200":
           description: Service ticket updated successfully.
@@ -727,10 +727,13 @@ definitions:
         type: string
       services:
         type: string
+      mechanic:
+        type: number
     required:
       - ticket_id
       - customer_phone
       - services
+      - vin
   ServiceTicketInput:
     type: object
     properties:
@@ -752,6 +755,11 @@ definitions:
         type: string
       services:
         type: string
+  ServiceTicketEdit:
+    type: object
+    properties:
+      mechanic_id: 
+        type: number
   Vehicle:
     type: object
     properties:
