@@ -1,8 +1,10 @@
 from application import create_app
 from application.models import db, Mechanics
 from application.utils.util import encode_token
-
 import unittest
+
+# run with - python -m unittest discover tests
+
 
 class TestMechanics(unittest.TestCase):
     def setUp(self):

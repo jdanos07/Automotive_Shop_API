@@ -2,6 +2,9 @@ from application import create_app
 from application.models import db
 import unittest
 
+# run with - python -m unittest discover tests
+
+
 class TestVehicles(unittest.TestCase):
     def setUp(self):
         self.app = create_app('TestingConfig')

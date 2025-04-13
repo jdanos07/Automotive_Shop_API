@@ -1,8 +1,10 @@
 from application import create_app
 from application.models import db, Customers
 from application.utils.util import encode_token
-
 import unittest
+
+# run with - python -m unittest discover tests
+
 
 class TestCustomers(unittest.TestCase):
     def setUp(self):
