@@ -32,7 +32,7 @@ jobs:
         echo "Python Version: $(python --version)"
         echo "Working Directory: $(pwd)"
         echo "Contents of Working Directory: $(ls -l)"
-        echo "Contents of site-packages: $(ls -l venv/lib/python*/site-packages )"6
+        echo "Contents of site-packages: $(ls -l venv/lib/python*/site-packages )"
       
   test:
     needs: build
@@ -58,4 +58,6 @@ jobs:
           python -m pip install -r requirements.txt
 
       - name: Run test
-        run: python -m unittest discover -s tests -p 'test_*.py'
+        run: |
+          cd Automotive_Shop_app
+          python -m unittest discover -s tests -p 'test_*.py'
