@@ -2,4 +2,4 @@ from flask import Blueprint
 
 service_tickets_bp = Blueprint('service_tickets_bp', __name__)
 
-from application.blueprints.service_ticket import routes
+from blueprints.service_ticket import routes
