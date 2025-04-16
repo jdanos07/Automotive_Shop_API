@@ -1,12 +1,12 @@
-from application.blueprints.customer import customers_bp
-from application.blueprints.customer.customerSchema import customer_schema, customers_schema, login_schema
-from application.extensions import cache
-from application.utils.util import encode_token, token_required
+from . import customers_bp
+from .customerSchema import customer_schema, customers_schema, login_schema
+from extensions import cache
+from utils.util import encode_token, token_required
 from flask import request, jsonify
 from marshmallow import ValidationError
-from application.models import Customers, db
+from models import Customers, db
 from sqlalchemy import select
-from application.blueprints.service_ticket.service_ticketSchema import service_tickets_schema
+from blueprints.service_ticket.service_ticketSchema import service_tickets_schema
 
 @customers_bp.route('/', methods=['POST'])
 def create_customer():

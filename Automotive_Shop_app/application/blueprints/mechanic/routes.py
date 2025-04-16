@@ -1,12 +1,12 @@
-from application.blueprints.service_ticket.service_ticketSchema import service_tickets_schema
-from application.blueprints.mechanic import mechanics_bp
-from application.blueprints.mechanic.mechanicSchema import mechanic_schema, mechanics_schema, login_schema
-from application.utils.util import encode_token, token_required
+from blueprints.service_ticket.service_ticketSchema import service_tickets_schema
+from blueprints.mechanic import mechanics_bp
+from blueprints.mechanic.mechanicSchema import mechanic_schema, mechanics_schema, login_schema
+from utils.util import encode_token, token_required
 from flask import request, jsonify
 from marshmallow import ValidationError
-from application.models import Mechanics, db
+from models import Mechanics, db
 from sqlalchemy import select
-from application.extensions import limiter
+from extensions import limiter
 
 
 @mechanics_bp.route('/login', methods=['POST'])

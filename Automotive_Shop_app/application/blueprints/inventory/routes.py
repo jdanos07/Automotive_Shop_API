@@ -1,9 +1,9 @@
-from application.blueprints.inventory import inventory_bp
-from application.blueprints.inventory.inventorySchema import consumable_schema, consumables_schema
-from application.extensions import cache
+from blueprints.inventory import inventory_bp
+from blueprints.inventory.inventorySchema import consumable_schema, consumables_schema
+from extensions import cache
 from flask import request, jsonify
 from marshmallow import ValidationError
-from application.models import Inventory, db
+from models import Inventory, db
 from sqlalchemy import select
 
 @inventory_bp.route('/', methods=['POST'])
