@@ -1,5 +1,5 @@
-from application.models import Service_Tickets
-from application.extensions import ma
+from models import Service_Tickets
+from extensions import ma
 from marshmallow import fields
 
 class Service_TicketSchema(ma.SQLAlchemyAutoSchema):

@@ -1,5 +1,5 @@
-from application.models import Customers
-from application.extensions import ma
+from models import Customers
+from extensions import ma
 
 class CustomerSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
