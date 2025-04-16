@@ -1,3 +1,4 @@
+import os
 
 class DevelopmentConfig:
     DEBUG = True
@@ -6,4 +7,8 @@ class DevelopmentConfig:
 class TestingConfig:
     SQLALCHEMY_DATABASE_URI = 'sqlite:///testing.db'
     DEBUG = True
+    CACHE_TYPE = 'SimpleCache'
+
+class ProductionConfig:
+    SQLALCHemy_DATABASE_URI = os.environ.get('SQL_ALCHEMY_URI')
     CACHE_TYPE = 'SimpleCache'

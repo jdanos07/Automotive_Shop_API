@@ -3,8 +3,9 @@ from functools import wraps
 from flask import request, jsonify
 import jwt
 import jose
+import os
 
-SECRET_KEY = "sugar plum"
+SECRET_KEY = os.environ.get('SECRET_KEY') or "sugar plum"
 
 def encode_token(user_id):
     payload = {
