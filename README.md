@@ -13,7 +13,7 @@ This is a Flask-based web application designed to streamline operations for an a
   
   Service Ticket Management:
     Create, view, update, and delete service tickets.
-    Each service ticket links to a customer (by phone number), a vehicle (by VIN), and a mechanic.
+    Each service ticket links to a customer (by phone number), a vehicle (by VIN), and any mechanic that has been assigned to that ticket.
   
   Vehicle Management:
     Track vehicles using VINs and associate them with customers.
@@ -21,12 +21,7 @@ This is a Flask-based web application designed to streamline operations for an a
   Modular Design:
     Organized using Flask Blueprints for clean separation between different areas of functionality.
 
-2) Project Structure
-
-![image](https://github.com/user-attachments/assets/0ed00294-5852-4cc9-bde6-acb8c8cab713)
-
-
-3) Installation
+2) Installation
 
 Clone the Repository:
 
@@ -48,53 +43,10 @@ Install Dependencies:
     
     pip install -r requirements.txt
     
+3) Run Flask_app
 
-4) API Endpoints
-   
-  Customers
-  
-    GET /customers – List all customers.
-    
-    POST /customers – Create a new customer.
-    
-    GET /customers/<phone_number> – Retrieve a customer by phone number.
-    
-    PUT /customers/<phone_number> – Update a customer's information.
-    
-    DELETE /customers/<phone_number> – Delete a customer.
-    
-  Mechanics
-  
-    GET /mechanics – List all mechanics.
-    
-    POST /mechanics – Create a new mechanic.
-    
-    GET /mechanics/<employee_id> – Retrieve a mechanic by employee ID.
-    
-    PUT /mechanics/<employee_id> – Update mechanic details.
-    
-    DELETE /mechanics/<employee_id> – Delete a mechanic.
-    
-  Service Tickets
-  
-    GET /service_tickets – List all service tickets.
-    
-    POST /service_tickets – Create a new service ticket.
-    
-    GET /service_tickets/<ticket_id> – Retrieve a service ticket by ID.
-    
-    PUT /service_tickets/<ticket_id> – Update a service ticket.
-    
-    DELETE /service_tickets/<ticket_id> – Delete a service ticket.
+4) Navigate to Swagger Documentaion:
 
-  Vehicles
+    localhost/api/docs
 
-    GET /vehicles – List all vehicles.
-    
-    POST /vehicles – Create a new vehicles.
-    
-    GET /vehicles/<vin> – Retrieve a vehicles by VIN.
-    
-    PUT /vehicles/<vin> – Update a vehicles.
-    
-    DELETE /vehicles/<vin> – Delete a vehicle.
+    Here the user can find information concerning the end routes, app structure, as well as test the endpoints for expected results
