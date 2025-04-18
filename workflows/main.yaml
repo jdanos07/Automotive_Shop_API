@@ -59,7 +59,6 @@ jobs:
 
       - name: Run test
         run: |
-          cd Automotive_Shop_app
           python -m unittest discover -s tests -p 'test_*.py'
 
   deploy:
