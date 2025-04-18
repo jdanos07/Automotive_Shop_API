@@ -3,10 +3,10 @@ info:
   title: Automotive Repair Shop API
   version: "1.0"
   description: This API allows you to manage all facets of an Automive Repair Shop.
-host: 127.0.0.1:5000
+host: automotive-shop-api.onrender.com
 basePath: /
 schemes:
-  - http
+  - https
 securityDefinitions:
   BearerAuth:
     type: apiKey
