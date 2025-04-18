@@ -1,5 +1,5 @@
-from models import Mechanics
-from extensions import ma
+from application.models import Mechanics
+from application.extensions import ma
 
 class MechanicSchema(ma.SQLAlchemyAutoSchema):
     class Meta:

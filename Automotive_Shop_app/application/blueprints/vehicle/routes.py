@@ -1,8 +1,8 @@
-from blueprints.vehicle import vehicles_bp
-from blueprints.vehicle.vehicleSchema import vehicle_schema, vehicles_schema
+from application.blueprints.vehicle import vehicles_bp
+from application.blueprints.vehicle.vehicleSchema import vehicle_schema, vehicles_schema
 from flask import request, jsonify
 from marshmallow import ValidationError
-from models import Vehicles, db
+from application.models import Vehicles, db
 from sqlalchemy import select
 
 @vehicles_bp.route('/', methods=['POST'])

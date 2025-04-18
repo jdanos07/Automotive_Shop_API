@@ -1,8 +1,8 @@
-from blueprints.service_ticket import service_tickets_bp
-from blueprints.service_ticket.service_ticketSchema import service_ticket_schema, service_tickets_schema, edit_ticket_mechanics_schema
+from application.blueprints.service_ticket import service_tickets_bp
+from application.blueprints.service_ticket.service_ticketSchema import service_ticket_schema, service_tickets_schema, edit_ticket_mechanics_schema
 from flask import request, jsonify
 from marshmallow import ValidationError
-from models import Mechanics, Service_Tickets, db
+from application.models import Mechanics, Service_Tickets, db
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 
