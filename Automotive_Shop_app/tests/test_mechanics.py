@@ -1,6 +1,6 @@
-from Automotive_Shop_app.application import create_app
-from Automotive_Shop_app.application.models import db, Mechanics
-from Automotive_Shop_app.application.utils.util import encode_token
+from application import create_app
+from application.models import db, Mechanics
+from application.utils.util import encode_token
 import unittest
 
 # run with - python -m unittest discover tests

@@ -1,5 +1,5 @@
-from Automotive_Shop_app.application import create_app
-from Automotive_Shop_app.application.models import db
+from application import create_app
+from application.models import db
 import unittest
 
 # run with - cd Automotive_Shop_app
